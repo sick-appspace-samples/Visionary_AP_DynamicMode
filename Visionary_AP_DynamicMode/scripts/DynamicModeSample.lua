@@ -1,22 +1,22 @@
 --[[----------------------------------------------------------------------------
 
   Application Name: Visionary_AP_DynamicMode
-  
+
   Summary:
   Implement the dynamic filter and see the results
-  
+
   Description:
   Dynamic mode is a filter which detects differences between images
   and removes pixels which change more than a certain amount between
   the two images. This filter is implemented and applied to the live images
   the camera takes.
-  
+
   How to run:
   Start by running the app (F5) or debugging (F7+F10).
   Set a breakpoint on the first row inside the main function to debug step-by-step.
   See the results in the viewer on the DevicePage.
-  
-  
+
+
 ------------------------------------------------------------------------------]]
 
 --Start of Global Scope---------------------------------------------------------
@@ -38,8 +38,7 @@ local previousImage = nil
 
 --Start of Function and Event Scope---------------------------------------------
 
---Declaration of the 'main' function as an entry point for the event loop
---@main()
+---Declaration of the 'main' function as an entry point for the event loop
 local function main()
   Image.Provider.Camera.start(camera)
 end
@@ -47,7 +46,7 @@ end
 --Registration of the 'main' function to the 'Engine.OnStarted' event
 Script.register("Engine.OnStarted", main)
 
---@dynamicFilter(image:Image)
+---@param image Image
 local function dynamicFilter(image)
   --store the datatype of the pixel
   local originalType = Image.getType(image)
@@ -70,11 +69,12 @@ local function dynamicFilter(image)
   end
   --store the most recent image to use it as the last image in the next iteration
   previousImage = currentImage
-  
+
   return result
 end
 
---@handleOnNewImage(image:Image,sensordata:SensorData)
+---@param image Image
+---@param sensordata SensorData
 local function handleOnNewImage(image)
   local img = dynamicFilter(image[1])
   View.addImage(viewer, img, deco)
